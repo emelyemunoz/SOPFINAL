@@ -38,7 +38,7 @@ export class PedidoAdmin implements OnInit {
   cargarPedidos(): void {
 
     this.http.get<any[]>(
-      'http://localhost:8080/pedido/listpedidos'
+      '/api/pedido/listpedidos'
     ).subscribe({
 
       next: (respuesta) => {
@@ -56,7 +56,7 @@ export class PedidoAdmin implements OnInit {
   actualizarEstado(pedido: any): void {
 
     this.http.put(
-      `http://localhost:8080/pedido/update/${pedido.idpedido}`,
+      `/api/pedido/update/${pedido.idpedido}`,
       pedido
     ).subscribe({
 

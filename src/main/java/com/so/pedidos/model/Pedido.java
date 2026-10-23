@@ -41,7 +41,6 @@ public class Pedido {
     @JoinColumn(name = "Cliente_idCliente", nullable = false)
     private Cliente cliente;
 
-    
     public int getIdpedido() {
         return idpedido;
     }
@@ -74,14 +73,6 @@ public class Pedido {
         this.total = total;
     }
 
-    public List<Detalle_pedido> getDetalle_pedido() {
-        return detallePedido;
-    }
-
-    public void setDetalle_pedido(List<Detalle_pedido> detalle_pedido) {
-        this.detallePedido = detalle_pedido;
-    }
-
     public Cliente getCliente() {
         return cliente;
     }
@@ -97,5 +88,4 @@ public class Pedido {
     public void setDetallePedido(List<Detalle_pedido> detallePedido) {
         this.detallePedido = detallePedido;
     }
-
 }

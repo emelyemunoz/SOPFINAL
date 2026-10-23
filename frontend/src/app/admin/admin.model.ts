@@ -12,3 +12,33 @@ export interface Producto {
   precio: number;
   lote: Lote;
 }
+
+export interface auditoria {
+
+  idAuditoria: number;
+
+  idUsuario: number | null;
+
+  usuario: string;
+
+  rol: string;
+
+  accion: string;
+
+  entidad: string;
+
+  idEntidad: number | null;
+
+  idUsuarioAfectado: number | null;
+
+  usuarioAfectado: string | null;
+
+  descripcion: string;
+
+  valorAnterior: string | null;
+
+  valorNuevo: string | null;
+
+  fechaHora: string;
+
+}

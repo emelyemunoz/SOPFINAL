@@ -37,7 +37,7 @@ export class Login {
   localStorage.setItem('usuario', JSON.stringify(respuesta));
 
   if (respuesta.rol === 'ADMIN') {
-    this.router.navigate(['/admin/productos']);
+    this.router.navigate(['/admin/producto']);
   } else {
     this.router.navigate(['/catalogo']);
   }

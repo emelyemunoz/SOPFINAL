@@ -1,0 +1,204 @@
+<div class="admin-page">
+
+  <nav class="admin-nav">
+
+    <a
+      routerLink="/admin/producto"
+      routerLinkActive="active">
+      Productos
+    </a>
+
+    <a
+      routerLink="/admin/lote"
+      routerLinkActive="active">
+      Lote
+    </a>
+
+    <a
+      routerLink="/admin/pedido"
+      routerLinkActive="active">
+      Pedido
+    </a>
+
+    <a
+      routerLink="/admin/auditoria"
+      routerLinkActive="active">
+      Auditoría
+    </a>
+
+
+    <button
+      type="button"
+      class="cerrar-sesion"
+      (click)="cerrarSesion()">
+      Cerrar sesión
+    </button>
+
+  </nav>
+
+  <h1>Auditoría del sistema</h1>
+
+  <p class="descripcion">
+    Historial de acciones realizadas por clientes y administradores.
+  </p>
+
+
+  <div class="buscador">
+
+    <input
+      type="text"
+      [(ngModel)]="busqueda"
+      (input)="buscarUsuario()"
+      placeholder="Buscar por nombre de usuario"
+    >
+
+    <button
+      *ngIf="busqueda"
+      type="button"
+      class="limpiar"
+      (click)="limpiarBusqueda()">
+      Limpiar
+    </button>
+
+  </div>
+
+
+  <div class="resultado-busqueda" *ngIf="busqueda">
+
+    Mostrando auditoría relacionada con:
+    <strong>{{ busqueda }}</strong>
+
+  </div>
+
+
+  <div class="tabla-contenedor">
+
+    <table>
+
+      <thead>
+
+        <tr>
+
+          <th>Fecha y hora</th>
+
+          <th>Usuario</th>
+
+          <th>Rol</th>
+
+          <th>Acción</th>
+
+          <th>Entidad</th>
+
+          <th>Usuario afectado</th>
+
+          <th>Descripción</th>
+
+          <th>Valor anterior</th>
+
+          <th>Valor nuevo</th>
+
+        </tr>
+
+      </thead>
+
+      <tbody>
+
+        <tr *ngFor="let registro of auditoriasFiltradas">
+
+          <td class="fecha">
+            {{ registro.fechaHora | date:'dd/MM/yyyy HH:mm:ss' }}
+          </td>
+
+          <td>
+            <strong>
+              {{ registro.usuario }}
+            </strong>
+          </td>
+
+          <td>
+            {{ registro.rol }}
+          </td>
+
+          <td>
+            {{ registro.accion }}
+          </td>
+
+          <td>
+            {{ registro.entidad }}
+          </td>
+
+          <td>
+
+            <span *ngIf="registro.usuarioAfectado">
+              {{ registro.usuarioAfectado }}
+            </span>
+
+            <span
+              *ngIf="!registro.usuarioAfectado"
+              class="sin-registro">
+              —
+            </span>
+
+          </td>
+
+          <td>
+            {{ registro.descripcion }}
+          </td>
+
+          <td class="valor">
+
+            <span *ngIf="registro.valorAnterior">
+              {{ registro.valorAnterior }}
+            </span>
+
+            <span
+              *ngIf="!registro.valorAnterior"
+              class="sin-registro">
+              —
+            </span>
+
+          </td>
+
+          <td class="valor">
+
+            <span *ngIf="registro.valorNuevo">
+              {{ registro.valorNuevo }}
+            </span>
+
+            <span
+              *ngIf="!registro.valorNuevo"
+              class="sin-registro">
+              —
+            </span>
+
+          </td>
+
+        </tr>
+
+
+        <tr *ngIf="auditoriasFiltradas.length === 0">
+
+          <td
+            colspan="9"
+            class="sin-datos">
+
+            <span *ngIf="busqueda">
+              No existen registros de auditoría para
+              "{{ busqueda }}".
+            </span>
+
+            <span *ngIf="!busqueda">
+              No hay registros de auditoría.
+            </span>
+
+          </td>
+
+        </tr>
+
+      </tbody>
+
+    </table>
+
+  </div>
+
+</div>

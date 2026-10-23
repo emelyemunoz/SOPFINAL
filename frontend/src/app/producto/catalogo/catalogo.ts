@@ -30,12 +30,12 @@ export class Catalogo implements OnInit, OnDestroy {
   productos: any[] = [];
   carrito: any[] = [];
 
-constructor(
-  private productoService: ProductoService,
-  private cd: ChangeDetectorRef,
-  private router: Router,
-  @Inject(PLATFORM_ID) private platformId: Object
-) {}
+  constructor(
+    private productoService: ProductoService,
+    private cd: ChangeDetectorRef,
+    private router: Router,
+    @Inject(PLATFORM_ID) private platformId: Object
+  ) {}
 
   ngOnInit(): void {
     this.cargarProductos();
@@ -62,63 +62,67 @@ constructor(
     });
   }
 
- agregarAlCarrito(producto: any): void {
+  agregarAlCarrito(producto: any): void {
 
-  if (!isPlatformBrowser(this.platformId)) {
-    return;
-  }
-
-  const existente = this.carrito.find(
-    item => item.idproducto === producto.idproducto
-  );
-
-  if (existente) {
-    existente.cantidad++;
-  } else {
-    this.carrito.push({
-      ...producto,
-      cantidad: 1
-    });
-  }
-
-  localStorage.setItem(
-    'carrito',
-    JSON.stringify(this.carrito)
-  );
-
-  alert(producto.nombreProducto + ' agregado al carrito');
-}
-
- cargarCarrito(): void {
-
-  if (isPlatformBrowser(this.platformId)) {
-
-    const carritoGuardado = localStorage.getItem('carrito');
-
-    if (carritoGuardado) {
-      this.carrito = JSON.parse(carritoGuardado);
+    if (!isPlatformBrowser(this.platformId)) {
+      return;
     }
 
-  }
-}
+    const existente = this.carrito.find(
+      item => item.idproducto === producto.idproducto
+    );
 
- irCarrito(): void {
-  this.router.navigate(['/carrito']);
-}
+    if (existente) {
+      existente.cantidad++;
+    } else {
+      this.carrito.push({
+        ...producto,
+        cantidad: 1
+      });
+    }
+
+    localStorage.setItem(
+      'carrito',
+      JSON.stringify(this.carrito)
+    );
+
+    alert(producto.nombreProducto + ' agregado al carrito');
+  }
+
+  cargarCarrito(): void {
+
+    if (isPlatformBrowser(this.platformId)) {
+
+      const carritoGuardado = localStorage.getItem('carrito');
+
+      if (carritoGuardado) {
+        this.carrito = JSON.parse(carritoGuardado);
+      }
+
+    }
+  }
+
+  irCarrito(): void {
+    this.router.navigate(['/carrito']);
+  }
 
   irMisPedidos(): void {
     this.router.navigate(['/mis-pedidos']);
   }
 
- cerrarSesion(): void {
-
-  if (isPlatformBrowser(this.platformId)) {
-    localStorage.removeItem('carrito');
-    localStorage.removeItem('usuario');
+  irBuzon(): void {
+    this.router.navigate(['/buzon']);
   }
 
-  this.router.navigate(['/login']);
-}
+  cerrarSesion(): void {
+
+    if (isPlatformBrowser(this.platformId)) {
+      localStorage.removeItem('carrito');
+      localStorage.removeItem('usuario');
+    }
+
+    this.router.navigate(['/login']);
+  }
 
   ngOnDestroy(): void {
   }

@@ -20,12 +20,14 @@ import { HttpClient } from '@angular/common/http';
 export class MisPedidos implements OnInit {
 
   pedidos: any[] = [];
-constructor(
-  private http: HttpClient,
-  private router: Router,
-  private cdr: ChangeDetectorRef,
-  @Inject(PLATFORM_ID) private platformId: Object
-) {}
+
+  constructor(
+    private http: HttpClient,
+    private router: Router,
+    private cdr: ChangeDetectorRef,
+    @Inject(PLATFORM_ID) private platformId: Object
+  ) {}
+
   ngOnInit(): void {
 
     if (!isPlatformBrowser(this.platformId)) {
@@ -43,30 +45,82 @@ constructor(
 
     this.cargarPedidos(usuario.idCliente);
   }
-cargarPedidos(idCliente: number): void {
 
-  this.http.get<any[]>(
-    'http://localhost:8080/pedido/listpedidos'
-  ).subscribe({
-next: (respuesta) => {
+  cargarPedidos(idCliente: number): void {
 
-  console.log('Pedidos recibidos:', respuesta);
-  console.log('Cliente actual:', idCliente);
+    this.http.get<any[]>(
+      '/api/pedido/listpedidos'
+    ).subscribe({
 
-  this.pedidos = respuesta.filter(
-    pedido => pedido.cliente?.idCliente === idCliente
-  );
+      next: (respuesta) => {
 
-  console.log('Pedidos filtrados:', this.pedidos);
+        console.log('Pedidos recibidos:', respuesta);
+        console.log('Cliente actual:', idCliente);
 
-  this.cdr.detectChanges();
-},
-    error: (error) => {
-      console.error('Error al cargar pedidos:', error);
+        this.pedidos = respuesta.filter(
+          pedido => pedido.cliente?.idCliente === idCliente
+        );
+
+        console.log('Pedidos filtrados:', this.pedidos);
+
+        this.cdr.detectChanges();
+      },
+
+      error: (error) => {
+        console.error('Error al cargar pedidos:', error);
+      }
+
+    });
+  }
+
+  descargarFactura(pedido: any): void {
+
+    const datosUsuario = localStorage.getItem('usuario');
+
+    if (!datosUsuario) {
+      this.router.navigate(['/login']);
+      return;
     }
 
-  });
-}
+    const usuario = JSON.parse(datosUsuario);
+
+    this.http.get(
+      `/api/factura/descargar/${pedido.idpedido}/${usuario.idCliente}`,
+      {
+        responseType: 'blob'
+      }
+    ).subscribe({
+
+      next: (archivo) => {
+
+        const url = window.URL.createObjectURL(archivo);
+
+        const enlace = document.createElement('a');
+
+        enlace.href = url;
+        enlace.download =
+          `factura-pedido-${pedido.idpedido}.txt`;
+
+        enlace.click();
+
+        window.URL.revokeObjectURL(url);
+      },
+
+      error: (error) => {
+
+        console.error(
+          'Error al descargar factura:',
+          error
+        );
+
+        alert(
+          'No se pudo descargar la factura.'
+        );
+      }
+
+    });
+  }
+
   volverCatalogo(): void {
     this.router.navigate(['/catalogo']);
   }

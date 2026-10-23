@@ -20,7 +20,6 @@ import com.so.pedidos.model.Detalle_pedido;
 import com.so.pedidos.model.Pedido;
 import com.so.pedidos.model.Producto;
 
-@CrossOrigin(origins = "http://localhost:4200")
 @RestController
 @RequestMapping("/detallepedido")
 public class DetallePedidoController {

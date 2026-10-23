@@ -34,7 +34,7 @@ public class Producto {
     private String descripcion;
 
     @Column(name = "Precio")
-    private double precio;
+    private Double precio;
 
         @OneToMany(mappedBy = "producto", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Detalle_pedido> detallePedido;
@@ -83,12 +83,12 @@ public Producto(String nombreProducto, String descripcion, Double precio, Lote l
     }
 
 
-    public double getPrecio() {
+    public Double getPrecio() {
         return precio;
     }
 
 
-    public void setPrecio(double precio) {
+    public void setPrecio(Double precio) {
         this.precio = precio;
     }
 

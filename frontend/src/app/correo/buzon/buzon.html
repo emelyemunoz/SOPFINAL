@@ -1,0 +1,123 @@
+<div class="buzon-container">
+
+  <div class="encabezado">
+
+    <div>
+      <h1>Buzón de entrada</h1>
+      <p>Correos recibidos en el sistema</p>
+    </div>
+
+    <div class="acciones">
+
+      <button
+        class="btn-volver"
+        type="button"
+        (click)="volverCatalogo()">
+        ← Volver al catálogo
+      </button>
+
+      <button
+        class="btn-actualizar"
+        type="button"
+        (click)="cargarCorreos()">
+        Actualizar
+      </button>
+
+    </div>
+
+  </div>
+
+  <div *ngIf="error" class="mensaje-error">
+    {{ error }}
+  </div>
+
+  <div *ngIf="cargando" class="mensaje">
+    Cargando correos...
+  </div>
+
+  <div
+    *ngIf="!cargando && correos.length === 0"
+    class="mensaje">
+    No hay correos en el buzón.
+  </div>
+
+  <div
+    *ngIf="!cargando && correos.length > 0"
+    class="panel-buzon">
+
+    <!-- LISTA DE CORREOS -->
+    <div class="lista-correos">
+
+      <div
+        *ngFor="let correo of correos"
+        class="correo-item"
+        [class.seleccionado]="
+          correoSeleccionado?.id === correo.id
+        "
+        (click)="abrirCorreo(correo.id)">
+
+        <div class="correo-remitente">
+          {{ correo.remitente }}
+        </div>
+
+        <div class="correo-asunto">
+          {{ correo.asunto }}
+        </div>
+
+        <div class="correo-fecha">
+          {{ correo.fecha }}
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- CORREO ABIERTO -->
+    <div class="correo-detalle">
+
+      <div
+        *ngIf="!correoSeleccionado"
+        class="sin-seleccion">
+        Selecciona un correo para leerlo.
+      </div>
+
+      <div *ngIf="correoSeleccionado">
+
+        <div class="detalle-encabezado">
+
+          <div>
+            <h2>{{ correoSeleccionado.asunto }}</h2>
+
+            <p>
+              <strong>De:</strong>
+              {{ correoSeleccionado.remitente }}
+            </p>
+
+            <p>
+              <strong>Fecha:</strong>
+              {{ correoSeleccionado.fecha }}
+            </p>
+          </div>
+
+          <button
+            type="button"
+            class="btn-cerrar"
+            (click)="cerrarCorreo()">
+            ×
+          </button>
+
+        </div>
+
+        <hr>
+
+        <div class="contenido-correo">
+          {{ correoSeleccionado.contenido }}
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
